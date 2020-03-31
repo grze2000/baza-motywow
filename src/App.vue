@@ -55,10 +55,32 @@
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                 </v-expansion-panels>
+                <div v-else>
+                    <v-alert border="left" colored-border color="blue" elevation="2" icon="keyboard_backspace">
+                        Wybierz motyw aby przeglądać nawiązania do utworów
+                    </v-alert>
+                    <v-card>
+                        <v-container class="d-flex flex-column text-center">
+                            <v-icon size="6em" color="blue">school</v-icon>
+                            <p class="headline mt-5">
+                                <strong class="blue--text"> Baza motywów</strong> jest zbiorem wątków z lektur, książek, filmów, seriali itp. pogrupowanych według motywów,
+                                którego celem jest pomoc w tworzeniu prac wymagających odwołania do tekstów kultury. Dzięki tej bazie możesz szybko i łatwo powtórzyć
+                                ważne wątki zarówno z utworów omawianych w szkole, jak i tych pozaszkolnych. <v-icon color="black">sentiment_satisfied</v-icon>
+                            </p>
+                            <p class="headline my-5">
+                                W bazie znajduje się {{ itemCount }} pogrupowanych w {{ motifCount }}.
+                                Możesz pomóc rozwijać bazę dodając własne propozycje nawiązań do utworów za pomocą opcji
+                                <v-btn color="orange" class="title" @click="dialog = true" text>
+                                    Zaproponuj nawiązanie
+                                </v-btn>
+                            </p>
+                        </v-container>
+                    </v-card>
+                </div>
             </v-container>
         </v-content>
 
-        <v-dialog v-model="dialog" max-width="600">
+        <v-dialog v-model="dialog" max-width="600" persistent>
             <v-card>
                 <v-card-title class="headline d-flex flex-column align-start">
                     <span>Zaproponuj nawiązanie do utworu</span>
@@ -267,6 +289,27 @@ export default {
       closeDialog() {
           this.$refs.addNewForm.reset();
           this.dialog = false;
+      }
+  },
+  computed: {
+      itemCount() {
+          let counter = 0;
+          for (let item of this.motifs) {
+              counter += item.items.length;
+          }
+          if([2, 3, 4].includes(counter % 10)) {
+              counter = counter.toString()+' nazwiązania';
+          } else {
+              counter = counter.toString()+' nawiązań';
+          }
+          return counter;
+      },
+      motifCount() {
+          if([2, 3, 4].includes(this.motifs.length % 10)) {
+              return this.motifs.length.toString()+' motywy';
+          } else {
+              return this.motifs.length.toString()+' motywów';
+          }
       }
   }
 };
