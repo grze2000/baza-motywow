@@ -37,14 +37,21 @@
                     <v-expansion-panel v-for="item in motifs[selected].items" :key="item.title">
                         <v-expansion-panel-header>{{ item.title + (item.year ? ` (${item.year})` : '') + (item.author ? ` - ${item.author}` : '')}}</v-expansion-panel-header>
                         <v-expansion-panel-content>
-                            <ul v-if="Array.isArray(item.description)">
-                                <li class="py-3" v-for="paragraph in item.description" :key="paragraph">
-                                    {{ paragraph }}
-                                </li>
-                            </ul>
-                            <span v-else>
-                                {{ item.description }}
-                            </span>
+                            <div class="d-flex flex-column">
+                                <ul v-if="Array.isArray(item.description)">
+                                    <li class="py-3" v-for="paragraph in item.description" :key="paragraph">
+                                        {{ paragraph }}
+                                    </li>
+                                </ul>
+                                <span v-else>
+                                    {{ item.description }}
+                                </span>
+                                <span class="caption mt-3 text-right grey--text text--darken-2">
+                                    Typ: <strong>{{ item.type }}</strong>
+                                    <span v-html="'&emsp;'"></span>
+                                    Dodał(a): <strong>{{ item.nick }} ({{ item.createdAt }})</strong>
+                                </span>
+                            </div>
                         </v-expansion-panel-content>
                     </v-expansion-panel>
                 </v-expansion-panels>
@@ -164,7 +171,10 @@ export default {
             items: [
                 {
                     title: 'Mit o Prometeuszu',
-                    description: 'Prometeusz wykrada bogom niebiański ogień i przekazuje go ludziom. Stosuje podstęp przeciw Zeusowi, za co ponosi karę'
+                    description: 'Prometeusz wykrada bogom niebiański ogień i przekazuje go ludziom. Stosuje podstęp przeciw Zeusowi, za co ponosi karę',
+                    type: 'Inny',
+                    nick: 'grze2000',
+                    createdAt: '31.03.2020'
                 },
                 {
                     title: 'Dziady cz.3',
