@@ -33,7 +33,7 @@
 
         <v-content class="grey lighten-5">
             <v-container fluid class="pa-5">
-                <v-expansion-panels accordion v-if="selected">
+                <v-expansion-panels accordion v-if="typeof selected !== 'undefined'">
                     <v-expansion-panel v-for="item in motifs[selected].items" :key="item.title">
                         <v-expansion-panel-header>{{ item.title + (item.year ? ` (${item.year})` : '') + (item.author ? ` - ${item.author}` : '')}}</v-expansion-panel-header>
                         <v-expansion-panel-content>
@@ -53,21 +53,79 @@
 
         <v-dialog v-model="dialog" max-width="600">
             <v-card>
-                <v-card-title class="headline">Zaproponuj nawiązanie</v-card-title>
+                <v-card-title class="headline d-flex flex-column align-start">
+                    <span>Zaproponuj nawiązanie do utworu</span>
+                    <span class="caption">* - pola obowiązkowe</span>    
+                </v-card-title>
                 <v-card-text>
-                    <div class="d-flex flex-column">
-                        <v-text-field label="Nazwa*" hint="Podaj nazwę utworu" required></v-text-field>
-                        <v-text-field label="Autor" hint="Podaj autora. W przypadku filmów i seriali podaj reżysera/reżyserów"></v-text-field>
-                        <v-text-field label="Rok wydania"></v-text-field>
-                        <v-combobox label="Typ utworu*" :items="comboboxItems" v-model="form.type" required></v-combobox>
-                        <v-text-field label="Motyw*" hint="Określ do jakiego motywu pasuje wątek z utworu" required></v-text-field>
-                        <v-textarea label="Opis*" hint="Opisz wątek z utworu pasujący do motywu" required no-resize></v-textarea>
-                    </div>
+                    <v-form v-model="valid" ref="addNewForm">
+                        <v-container>
+                        <v-row>
+                            <v-col cols="12">
+                                <v-text-field
+                                    label="Nazwa*"
+                                    hint="Podaj nazwę utworu"
+                                    v-model="form.name"
+                                    :rules="[v => !!v || 'To pole jest wymagane']"
+                                    required
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="6">
+                                <v-text-field
+                                    label="Autor"
+                                    hint="Podaj autora. W przypadku filmów i seriali podaj reżysera/reżyserów"
+                                    v-model="form.author"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="6">
+                                <v-text-field
+                                    label="Rok wydania"
+                                    v-model="form.year"
+                                    :rules="[v => ((/^\d{4}$/.test(v) && parseInt(v) <= new Date().getFullYear()) || v === '') || 'Podaj prawidłowy rok']"
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12" md="6">
+                                <v-combobox
+                                    label="Typ utworu*"
+                                    :items="comboboxItems"
+                                    v-model="form.type"
+                                    :rules="[v => !!v || 'Wybierz typ utworu']"
+                                    required
+                                ></v-combobox>
+                            </v-col>
+                            <v-col cols="12" md="6">
+                                <v-text-field label="Twóje imię/pseudonim" v-model="form.nick"></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-text-field
+                                    label="Motyw*"
+                                    hint="Określ do jakiego motywu pasuje wątek z utworu"
+                                    v-model="form.motif"
+                                    :rules="[v => !!v || 'Podaj motyw',
+                                    v => !!v && v.length < 25 || 'Nazwa motywu jest zbyt długa']"
+                                    required
+                                ></v-text-field>
+                            </v-col>
+                            <v-col cols="12">
+                                <v-textarea
+                                    label="Opis*"
+                                    hint="Opisz wątek z utworu pasujący do motywu"
+                                    v-model="form.description"
+                                    :rules="[v => !!v || 'Podaj opis',
+                                    v => !!v && v.length > 150 || 'Opis jest zbyt krótki',
+                                    v => !!v && v.length < 800 || 'Tekst jest zbyt długi']"
+                                    required
+                                    no-resize
+                                ></v-textarea>
+                            </v-col>
+                        </v-row>
+                    </v-container>
+                    </v-form>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
-                    <v-btn color="red" text @click="dialog = false">Anuluj</v-btn>
-                    <v-btn color="orange" dark depressed>Wyślij</v-btn>
+                    <v-btn color="red" text @click="closeDialog">Anuluj</v-btn>
+                    <v-btn color="orange" dark depressed @click="submit">Wyślij</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -162,9 +220,15 @@ export default {
         }
     ],
     dialog: false,
-    selected: 0,
+    selected: undefined,
     form: {
-        type: null
+        name: '',
+        type: null,
+        author: '',
+        year: '',
+        nick: '',
+        motif: '',
+        description: ''
     },
     comboboxItems: [
         'Książka',
@@ -173,14 +237,27 @@ export default {
         'Piosenka',
         'Wiersz',
         'Inny'
-    ]
+    ],
+    valid: false
   }),
-  created: function() {
+  created() {
       this.motifs.sort((a, b) => {
           if(a.title < b.title) return -1;
           else if(a.title > b.title) return 1;
           else return 0;
       });
+  },
+  methods: {
+      submit() {
+          this.$refs.addNewForm.validate();
+          if(this.valid) {
+              console.log(this.form);
+          }
+      },
+      closeDialog() {
+          this.$refs.addNewForm.reset();
+          this.dialog = false;
+      }
   }
 };
 </script>
