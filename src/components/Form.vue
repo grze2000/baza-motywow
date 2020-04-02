@@ -88,9 +88,7 @@ export default {
     methods: {
         submit() {
             this.$refs.addNewForm.validate();
-            if(this.valid) {
-                console.log(this.form);
-            }
+            return this.valid;
         },
         reset() {
             this.$refs.addNewForm.reset();
