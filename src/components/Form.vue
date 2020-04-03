@@ -5,7 +5,7 @@
                 <v-text-field
                     label="Nazwa*"
                     hint="Podaj nazwę utworu"
-                    v-model="form.name"
+                    v-model="form.title"
                     :rules="[v => !!v || 'To pole jest wymagane']"
                     required
                 ></v-text-field>
@@ -65,8 +65,24 @@
 <script>
 export default {
     name: 'Form',
-    data: () => ({
+    props: {
         form: {
+            type: Object,
+            default() {
+                return {
+                    title: '',
+                    type: null,
+                    author: '',
+                    year: '',
+                    nick: '',
+                    motif: '',
+                    description: ''
+                }
+            }
+        }
+    },
+    data: () => ({
+        /*form: {
             name: '',
             type: null,
             author: '',
@@ -74,7 +90,7 @@ export default {
             nick: '',
             motif: '',
             description: ''
-        },
+        },*/
         comboboxItems: [
             'Książka',
             'Film',

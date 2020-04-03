@@ -1,10 +1,8 @@
 <template>
     <div>
         <v-app-bar app clipped-left class="orange darken-2" dark>
-            <div class="d-flex align-center">
-                <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
-                <v-toolbar-title class="ml-5">Baza <strong>Motywów</strong></v-toolbar-title>
-            </div>
+            <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-toolbar-title>Baza <strong>Motywów</strong></v-toolbar-title>
         </v-app-bar>
 
         <v-navigation-drawer app clipped v-model="drawer">
