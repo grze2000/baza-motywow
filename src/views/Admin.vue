@@ -19,22 +19,25 @@
         <v-navigation-drawer v-model="drawer" app clipped>
             <v-list shaped>
                 <v-subheader>Panel Administratora</v-subheader>
-                <v-list-item-group>
                     <v-list-item @click="selected = undefined">
                         <v-list-item-content>
                             Oczekujące na potwierdzenie
                         </v-list-item-content>
-                        <v-list-item-actions>
-                            <v-badge color="orange" :content="suggestions.length" bottom></v-badge>
-                        </v-list-item-actions>
+                        <v-list-item-action>
+                            <v-badge color="orange" :content="suggestions.length" bottom v-if="suggestions.length"></v-badge>
+                        </v-list-item-action>
                     </v-list-item>
-                </v-list-item-group>
+                    <v-list-item link to="/" target="_blank">
+                        <v-list-item-title>
+                            Baza motywów
+                        </v-list-item-title>
+                    </v-list-item>
             </v-list>
         </v-navigation-drawer>
         <v-content class="grey lighten-5 fill-height">
             <v-container fluid>
                 <v-card v-if="typeof selected === 'undefined'">
-                    <v-list>
+                    <v-list v-if="suggestions.length">
                         <v-list-item-group v-model="selected">
                             <v-list-item v-for="item in suggestions" :key="item._id">
                                 {{ item.reference.title + (item.reference.year ? ` (${item.reference.year})` : '') }}
@@ -43,6 +46,7 @@
                             </v-list-item>
                         </v-list-item-group>
                     </v-list>
+                    <v-container v-else class="text-center">Brak oczekujących propozycji</v-container>
                 </v-card>
                 <v-card v-else class="pa-5">
                     <div class="d-flex align-center">
@@ -52,19 +56,20 @@
                         <v-spacer></v-spacer>
                             Utworzono: {{ new Date(suggestions[selected].reference.dateOfCreation).toLocaleString() }}
                         <v-spacer></v-spacer>
-                        <v-btn color="error" small>
+                        <v-btn color="error" small @click="discard">
                             <v-icon left>close</v-icon>
                             Odrzuć
                         </v-btn>
-                        <v-btn color="success" class="ml-3" small>
+                        <v-btn color="success" class="ml-3" small @click="approve">
                             <v-icon left>check</v-icon>
                             Potwierdź
                         </v-btn>
                     </div>
-                    <Form ref="form" :form="suggestions[selected].reference"></Form>
+                    <Form ref="form" :default="suggestions[selected]"></Form>
                 </v-card>
             </v-container>
         </v-content>
+        <v-snackbar v-model="snackbar.show">{{ snackbar.message }}</v-snackbar>
     </div>
 </template>
 
@@ -81,16 +86,41 @@ export default {
         return {
             drawer: true,
             suggestions: [],
-            selected: undefined
+            selected: undefined,
+            snackbar: {
+                show: false,
+                message: ''
+            }
         };
     },
     created() {
-      this.refresh();  
-    },
+      this.refresh();    },
     methods: {
         refresh() {
             axios.get(`${process.env.VUE_APP_API_URL}/suggestions`).then((response) => {
                 this.suggestions = response.data;
+            });
+        },
+        discard() {
+            axios.delete(`${process.env.VUE_APP_API_URL}/suggestions/${this.suggestions[this.selected]._id}`).then(() => {
+                this.snackbar.message = 'Propozycja została odrzucona!';
+                this.snackbar.show = true;
+                this.selected = undefined;
+                this.refresh();
+            }).catch((err) => {
+                this.snackbar.message = `Błąd: ${err}`;
+                this.snackbar.show = true;
+            });
+        },
+        approve() {
+            axios.post(`${process.env.VUE_APP_API_URL}/suggestions/${this.suggestions[this.selected]._id}`, this.$refs.form.suggestion).then(() => {
+                this.snackbar.message = 'Propozycja została zatwierdzona!';
+                this.snackbar.show = true;
+                this.selected = undefined;
+                this.refresh();
+            }).catch((err) => {
+                this.snackbar.message = `Błąd: ${err}`;
+                this.snackbar.show = true;
             });
         }
     }

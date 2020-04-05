@@ -1,16 +1,16 @@
 <template>
-    <div>
+    <div class="fill-height">
         <v-app-bar app clipped-left class="orange darken-2" dark>
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-toolbar-title>Baza <strong>Motywów</strong></v-toolbar-title>
         </v-app-bar>
 
         <v-navigation-drawer app clipped v-model="drawer">
-            <div class="d-flex flex-column" style="height: 100%">
+            <div class="d-flex flex-column fill-height">
                 <v-list shaped>
                     <v-subheader>Motywy</v-subheader>
                     <v-list-item-group v-model="selected">
-                        <v-list-item v-for="item in motifs" :key="item.id">
+                        <v-list-item v-for="item in motifs" :key="item._id">
                             <v-list-item-avatar>
                                 <v-img :src="item.imageURL ? item.imageURL : defaultAvatar"></v-img>
                             </v-list-item-avatar>
@@ -29,25 +29,25 @@
             </div>
         </v-navigation-drawer>
 
-        <v-content class="grey lighten-5">
+        <v-content class="grey lighten-5 fill-height">
             <v-container fluid class="pa-5">
                 <v-expansion-panels accordion v-if="typeof selected !== 'undefined'">
-                    <v-expansion-panel v-for="item in motifs[selected].items" :key="item.title">
+                    <v-expansion-panel v-for="item in motifs[selected].items" :key="item._id">
                         <v-expansion-panel-header>{{ item.title + (item.year ? ` (${item.year})` : '') + (item.author ? ` - ${item.author}` : '')}}</v-expansion-panel-header>
                         <v-expansion-panel-content>
                             <div class="d-flex flex-column">
                                 <ul v-if="item.description.length > 1">
-                                    <li class="py-3" v-for="paragraph in item.description" :key="paragraph">
+                                    <li class="py-3" v-for="paragraph in item.description" :key="paragraph" style="word-break: break-word;">
                                         {{ paragraph }}
                                     </li>
                                 </ul>
-                                <span v-else-if="item.description.length">
+                                <span v-else-if="item.description.length" style="word-break: break-word;">
                                     {{ item.description[0] }}
                                 </span>
                                 <span class="caption mt-3 text-right grey--text text--darken-2">
                                     Typ: <strong>{{ item.type }}</strong>
                                     <span v-html="'&emsp;'"></span>
-                                    Dodał(a): <strong>{{ item.nick }} ({{ item.createdAt }})</strong>
+                                    Dodał(a): <strong>{{ item.nick }} ({{ new Date(item.dateOfCreation).toLocaleString().split(', ')[0] }})</strong>
                                 </span>
                             </div>
                         </v-expansion-panel-content>
@@ -132,7 +132,7 @@ export default {
         submit() {
            if(this.$refs.form.submit()) {
                this.btnLoading = true;
-               axios.post(`${process.env.VUE_APP_API_URL}/suggestions`, this.$refs.form.form).then(() => {
+               axios.post(`${process.env.VUE_APP_API_URL}/suggestions`, this.$refs.form.suggestion).then(() => {
                    this.btnLoading = false;
                    this.$refs.form.reset();
                    this.dialog = false;

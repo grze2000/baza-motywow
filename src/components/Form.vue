@@ -3,9 +3,9 @@
         <v-row>
             <v-col cols="12">
                 <v-text-field
-                    label="Nazwa*"
-                    hint="Podaj nazwę utworu"
-                    v-model="form.title"
+                    label="Tytuł*"
+                    hint="Podaj tytuł utworu"
+                    v-model="suggestion.reference.title"
                     :rules="[v => !!v || 'To pole jest wymagane']"
                     required
                 ></v-text-field>
@@ -14,34 +14,34 @@
                 <v-text-field
                     label="Autor"
                     hint="Podaj autora. W przypadku filmów i seriali podaj reżysera/reżyserów"
-                    v-model="form.author"
+                    v-model="suggestion.reference.author"
                 ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
                 <v-text-field
                     label="Rok wydania"
-                    v-model="form.year"
-                    :rules="[v => ((/^\d{4}$/.test(v) && parseInt(v) <= new Date().getFullYear()) || v === '') || 'Podaj prawidłowy rok']"
+                    v-model="suggestion.reference.year"
+                    :rules="[v => ((/^\d{4}$/.test(v) && parseInt(v) <= new Date().getFullYear()) || !v) || 'Podaj prawidłowy rok']"
                 ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
                 <v-overflow-btn
                     label="Typ utworu*"
                     :items="comboboxItems"
-                    v-model="form.type"
+                    v-model="suggestion.reference.type"
                     :rules="[v => !!v || 'Wybierz typ utworu']"
                     required
                     dense
                 ></v-overflow-btn>
             </v-col>
             <v-col cols="12" md="6">
-                <v-text-field label="Twóje imię/pseudonim" v-model="form.nick"></v-text-field>
+                <v-text-field label="Twóje imię/pseudonim" v-model="suggestion.reference.nick"></v-text-field>
             </v-col>
             <v-col cols="12">
                 <v-text-field
                     label="Motyw*"
                     hint="Określ do jakiego motywu pasuje wątek z utworu"
-                    v-model="form.motif"
+                    v-model="suggestion.motif"
                     :rules="[v => !!v || 'Podaj motyw',
                     v => !!v && v.length < 25 || 'Nazwa motywu jest zbyt długa']"
                     required
@@ -51,7 +51,7 @@
                 <v-textarea
                     label="Opis*"
                     hint="Opisz wątek z utworu pasujący do motywu"
-                    v-model="form.description"
+                    v-model="suggestion.reference.description"
                     :rules="[v => !!v || 'Podaj opis',
                     v => !!v && v.length > 150 || 'Opis jest zbyt krótki',
                     v => !!v && v.length < 800 || 'Tekst jest zbyt długi']"
@@ -65,32 +65,19 @@
 <script>
 export default {
     name: 'Form',
-    props: {
-        form: {
-            type: Object,
-            default() {
-                return {
-                    title: '',
-                    type: null,
-                    author: '',
-                    year: '',
-                    nick: '',
-                    motif: '',
-                    description: ''
-                }
-            }
-        }
-    },
+    props: ['default'],
     data: () => ({
-        /*form: {
-            name: '',
-            type: null,
-            author: '',
-            year: '',
-            nick: '',
+        suggestion: {
             motif: '',
-            description: ''
-        },*/
+            reference: {
+                title: '',
+                type: null,
+                author: '',
+                year: '',
+                nick: '',
+                description: ''
+            }
+        },
         comboboxItems: [
             'Książka',
             'Film',
@@ -101,6 +88,11 @@ export default {
         ],
         valid: false
     }),
+    created() {
+        if(typeof this.default !== 'undefined') {
+            this.suggestion = this.default;
+        }
+    },
     methods: {
         submit() {
             this.$refs.addNewForm.validate();
