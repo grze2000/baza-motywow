@@ -95,7 +95,7 @@
             </v-card>
         </v-dialog>
 
-        <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">{{ snackbar.mesage }}</v-snackbar>
+        <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">{{ snackbar.message }}</v-snackbar>
     </div>
 </template>
 
@@ -136,11 +136,11 @@ export default {
                    this.btnLoading = false;
                    this.$refs.form.reset();
                    this.dialog = false;
-                   this.snackbar.mesage = 'Propozycja została zapisana i czeka na akceptację';
+                   this.snackbar.message = 'Propozycja została zapisana i czeka na akceptację';
                    this.snackbar.show = true;
                }).catch((err) => {
                    this.btnLoading = false;
-                   this.snackbar.mesage = `Wystąpił błąd: ${err.message}`;
+                   this.snackbar.message = `Wystąpił błąd: ${err.message}`;
                    this.snackbar.show = true;
                })
            }

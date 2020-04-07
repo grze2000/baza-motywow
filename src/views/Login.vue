@@ -7,23 +7,71 @@
                             <v-toolbar-title>Logowanie</v-toolbar-title>
                         </v-toolbar>
                         <v-card-text>
-                            <v-form>
-                                <v-text-field label="Nazwa użytkownika" prepend-icon="person"/>
-                                <v-text-field type="password" label="Hasło" prepend-icon="lock"/>
+                            <v-form ref="loginForm" v-model="valid">
+                                <v-text-field
+                                    label="Nazwa użytkownika"
+                                    prepend-icon="person"
+                                    required
+                                    :rules="[v=> !!v || 'To pole jest wymagane']"
+                                    v-model="data.username"
+                                ></v-text-field>
+                                <v-text-field
+                                    type="password"
+                                    label="Hasło"
+                                    prepend-icon="lock"
+                                    required
+                                    :rules="[v=> !!v || 'To pole jest wymagane']"
+                                    v-model="data.password"
+                                ></v-text-field>
                             </v-form>
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer/>
-                            <v-btn color="orange darken-2" dark>Zaloguj się</v-btn>
+                            <v-btn color="orange darken-2" dark @click="submit" :loading="loading">Zaloguj się</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>
             </v-row>
+            <v-snackbar v-model="snackbar.show" :timeout="snackbar.timeout">{{ snackbar.message }}</v-snackbar>
         </v-container>
 </template>
 
 <script>
+import axios from 'axios'
+
 export default {
-    name: 'Login'
+    name: 'Login',
+    data() {
+        return {
+            valid: false,
+            data: {
+                username: '',
+                password: ''
+            },
+            snackbar: {
+                show: false,
+                message: '',
+                timeout: 6000
+            },
+            loading: false
+        };
+    },
+    methods: {
+        submit() {
+            this.$refs.loginForm.validate();
+            if(this.valid) {
+                this.loading = true;
+                axios.post(`${process.env.VUE_APP_API_URL}/login`, this.data).then((token) => {
+                    localStorage.setItem('token', token);
+                    this.loading = false;
+                    this.$router.push('/admin');
+                }).catch((err) => {
+                    this.snackbar.message = err.response.data.message;
+                    this.snackbar.show = true;
+                    this.loading = false;
+                });
+            }
+        }
+    }
 }
 </script>

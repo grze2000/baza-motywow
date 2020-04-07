@@ -12,7 +12,7 @@
             <v-btn icon>
                 <v-icon @click="refresh">refresh</v-icon>
             </v-btn>
-            <v-btn icon>
+            <v-btn icon @click="logout">
                 <v-icon>power_settings_new</v-icon>
             </v-btn>
         </v-app-bar>
@@ -94,11 +94,23 @@ export default {
         };
     },
     created() {
-      this.refresh();    },
+        const token = localStorage.getItem('token');
+        if(!token) {
+            this.$router.push('/login');
+        }
+        this.refresh();
+    },
     methods: {
         refresh() {
             axios.get(`${process.env.VUE_APP_API_URL}/suggestions`).then((response) => {
                 this.suggestions = response.data;
+            }).catch((err) => {
+                if(err.response.status === 401) {
+                    this.$router.push('/login');
+                } else {
+                    this.snackbar.message = err.response.data.message;
+                    this.snackbar.show = true;
+                }
             });
         },
         discard() {
@@ -122,6 +134,10 @@ export default {
                 this.snackbar.message = `Błąd: ${err}`;
                 this.snackbar.show = true;
             });
+        },
+        logout() {
+            localStorage.removeItem('token');
+            this.$router.push('/login');
         }
     }
 }
