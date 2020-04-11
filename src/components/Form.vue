@@ -57,6 +57,7 @@
                     v => !!v && v.length < 800 || 'Tekst jest zbyt długi']"
                     required
                     no-resize
+                    counter
                 ></v-textarea>
             </v-col>
         </v-row>
