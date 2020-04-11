@@ -61,8 +61,8 @@ export default {
             this.$refs.loginForm.validate();
             if(this.valid) {
                 this.loading = true;
-                axios.post(`${process.env.VUE_APP_API_URL}/login`, this.data).then((token) => {
-                    localStorage.setItem('token', token);
+                axios.post(`${process.env.VUE_APP_API_URL}/login`, this.data).then((response) => {
+                    localStorage.setItem('token', response.data.token);
                     this.loading = false;
                     this.$router.push('/admin');
                 }).catch((err) => {

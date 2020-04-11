@@ -140,7 +140,11 @@ export default {
                    this.snackbar.show = true;
                }).catch((err) => {
                    this.btnLoading = false;
-                   this.snackbar.message = `Wystąpił błąd: ${err.message}`;
+                   if(typeof err.response.data.message !== 'undefined') {
+                       this.snackbar.message = err.response.data.message;
+                   } else {
+                       this.snackbar.message = `Wystąpił błąd: ${err.message}`;
+                   }
                    this.snackbar.show = true;
                })
            }

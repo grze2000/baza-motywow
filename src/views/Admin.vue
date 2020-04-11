@@ -98,6 +98,7 @@ export default {
         if(!token) {
             this.$router.push('/login');
         }
+        axios.defaults.headers.common['Authorization'] = token;
         this.refresh();
     },
     methods: {
