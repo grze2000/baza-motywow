@@ -66,7 +66,7 @@
                                 ważne wątki zarówno z utworów omawianych w szkole, jak i tych pozaszkolnych. <v-icon color="black">sentiment_satisfied</v-icon>
                             </p>
                             <p class="headline my-5">
-                                W bazie znajduje się {{ itemCount }} pogrupowanych w {{ motifCount }}.
+                                W bazie znajduje się {{ itemCount }} w {{ motifCount }}.
                                 Możesz pomóc rozwijać bazę dodając własne propozycje nawiązań do utworów za pomocą opcji
                                 <v-btn color="orange" class="title" @click="dialog = true" text>
                                     Zaproponuj nawiązanie
@@ -161,9 +161,9 @@ export default {
                 counter += item.items.length;
             }
             if([2, 3, 4].includes(counter % 10)) {
-                counter = counter.toString()+' nazwiązania';
+                counter = counter.toString()+' nazwiązania pogrupowane';
             } else {
-                counter = counter.toString()+' nawiązań';
+                counter = counter.toString()+' nawiązań pogrupowanych';
             }
             return counter;
         },
