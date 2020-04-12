@@ -6,7 +6,7 @@
                         <v-toolbar flat dark color="orange darken-2">
                             <v-toolbar-title>Logowanie</v-toolbar-title>
                         </v-toolbar>
-                        <v-card-text>
+                        <v-card-text @keyup.enter="submit">
                             <v-form ref="loginForm" v-model="valid">
                                 <v-text-field
                                     label="Nazwa użytkownika"
