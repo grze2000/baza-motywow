@@ -28,17 +28,17 @@
                 Potwierdź
             </v-btn>
         </div>
-        <Form ref="form" :default="suggestions[selected]"></Form>
+        <SuggestionForm ref="form" :default="suggestions[selected]"></SuggestionForm>
     </v-card>
 </template>
 
 <script>
 import axios from 'axios'
-import Form from '../components/Form.vue'
+import SuggestionForm from '../components/SuggestionForm.vue'
 
 export default {
     components: {
-        Form
+        SuggestionForm
     },
     data() {
         return {

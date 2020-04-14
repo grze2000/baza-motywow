@@ -7,14 +7,30 @@
         </v-list>
     </v-card>
     <v-card v-else>
-        {{ this.motifs[this.selected].imageURL }}
+        <v-container>
+            <div class="d-flex flex-row pb-2 align-center">
+                <v-btn dark fab color="orange" small @click="selected = undefined">
+                    <v-icon>arrow_back</v-icon>
+                </v-btn>
+                <v-spacer></v-spacer>
+                <v-btn color="success" small>
+                    <v-icon left>check</v-icon>
+                    Zapisz
+                </v-btn>
+            </div>
+            <MotifForm :default="motifs[selected]"></MotifForm>
+        </v-container>
     </v-card>
 </template>
 
 <script>
 import axios from 'axios'
+import MotifForm from '../components/MotifForm.vue'
 
 export default {
+    components: {
+        MotifForm
+    },
     data() {
         return {
             motifs: [],

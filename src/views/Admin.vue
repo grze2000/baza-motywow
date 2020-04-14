@@ -76,7 +76,7 @@ export default {
                 show: false,
                 message: ''
             },
-            component: undefined,
+            component: 'Suggestions',
             suggestionCount: 0
         };
     },

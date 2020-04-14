@@ -85,7 +85,7 @@
                     <span class="caption">* - pola obowiązkowe</span>    
                 </v-card-title>
                 <v-card-text>
-                    <Form ref="form"></Form>
+                    <SuggestionForm ref="form"></SuggestionForm>
                 </v-card-text>
                 <v-card-actions>
                     <v-spacer></v-spacer>
@@ -100,13 +100,13 @@
 </template>
 
 <script>
-import Form from '../components/Form.vue'
+import SuggestionForm from '../components/SuggestionForm.vue'
 import axios from 'axios'
 
 export default {
     name: 'Home',
     components: {
-        Form 
+        SuggestionForm 
     },
     data() {
         return {
