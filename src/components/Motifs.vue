@@ -13,12 +13,12 @@
                     <v-icon>arrow_back</v-icon>
                 </v-btn>
                 <v-spacer></v-spacer>
-                <v-btn color="success" small>
+                <v-btn color="success" small @click="save">
                     <v-icon left>check</v-icon>
                     Zapisz
                 </v-btn>
             </div>
-            <MotifForm :default="motifs[selected]"></MotifForm>
+            <MotifForm :default="motifs[selected]" ref="form"></MotifForm>
         </v-container>
     </v-card>
 </template>
@@ -51,6 +51,20 @@ export default {
                     this.$emit('showSnackbar', err.response.data.message);
                 }
             });
+        },
+        save() {
+            if(this.$refs.form.submit()) {
+                axios.patch(`${process.env.VUE_APP_API_URL}/motifs/${this.motifs[this.selected]._id}`, this.$refs.form.form).then(() => {
+                    this.refresh();
+                    this.$emit('showSnackbar', 'Zmiany zostały zapisane!');
+                }).catch((err) => {
+                    if(err.response.status === 401) {
+                        this.$router.push('/login');
+                    } else {
+                        this.$emit('showSnackbar', err.response.data.message);
+                    }
+                });
+            }
         }
     }
 }
