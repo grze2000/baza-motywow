@@ -53,8 +53,7 @@
                     hint="Opisz wątek z utworu pasujący do motywu"
                     v-model="suggestion.reference.description"
                     :rules="[v => !!v || 'Podaj opis',
-                    v => !!v && v.length > 150 || 'Opis jest zbyt krótki',
-                    v => !!v && v.length < 800 || 'Tekst jest zbyt długi']"
+                    v => !!v && v.length > 150 || 'Opis jest zbyt krótki']"
                     required
                     no-resize
                     counter
@@ -91,7 +90,10 @@ export default {
     }),
     created() {
         if(typeof this.default !== 'undefined') {
-            this.suggestion = this.default;
+            this.suggestion = {...this.suggestion, ...this.default};
+            if(Array.isArray(this.suggestion.reference.description)) {
+                this.suggestion.reference.description = this.suggestion.reference.description.join('\n\n');
+            }
         }
     },
     methods: {
@@ -101,6 +103,12 @@ export default {
         },
         reset() {
             this.$refs.addNewForm.reset();
+        },
+        getData() {
+            let copy = Object.assign({}, this.suggestion)
+            copy.reference = Object.assign({}, this.suggestion.reference);
+            copy.reference.description = copy.reference.description.split('\n\n');
+            return copy;
         }
     }
 }
