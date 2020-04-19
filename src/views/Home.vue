@@ -21,7 +21,13 @@
                     </v-list-item-group>
                 </v-list>
                 <div class="text-center mt-auto py-3">
-                    <v-btn depressed rounded class="orange white--text" @click="dialog = true" max-width="100%" small>
+                    <v-btn
+                        depressed
+                        rounded
+                        class="orange white--text"
+                        @click="dialog = true"
+                        max-width="100%"
+                        small>
                         <v-icon left>create</v-icon>
                         <span>Zaproponuj nawiązanie</span>
                     </v-btn>
@@ -33,11 +39,17 @@
             <v-container fluid class="pa-5">
                 <v-expansion-panels accordion v-if="typeof selected !== 'undefined'">
                     <v-expansion-panel v-for="item in motifs[selected].items" :key="item._id">
-                        <v-expansion-panel-header>{{ item.title + (item.year ? ` (${item.year})` : '') + (item.author ? ` - ${item.author}` : '')}}</v-expansion-panel-header>
+                        <v-expansion-panel-header>
+                            {{ item.title + (item.year ? ` (${item.year})` : '') + (item.author ? ` - ${item.author}` : '')}}
+                        </v-expansion-panel-header>
                         <v-expansion-panel-content>
                             <div class="d-flex flex-column">
                                 <ul v-if="item.description.length > 1">
-                                    <li class="py-3" v-for="paragraph in item.description" :key="paragraph" style="word-break: break-word;">
+                                    <li class="py-3"
+                                        v-for="paragraph in item.description"
+                                        :key="paragraph"
+                                        style="word-break: break-word;"
+                                    >
                                         {{ paragraph }}
                                     </li>
                                 </ul>
@@ -132,7 +144,7 @@ export default {
         submit() {
            if(this.$refs.form.submit()) {
                this.btnLoading = true;
-               axios.post(`${process.env.VUE_APP_API_URL}/suggestions`, this.$refs.form.suggestion).then(() => {
+               axios.post(`${process.env.VUE_APP_API_URL}/suggestions`, this.$refs.form.getData()).then(() => {
                    this.btnLoading = false;
                    this.$refs.form.reset();
                    this.dialog = false;

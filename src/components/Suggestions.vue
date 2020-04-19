@@ -69,7 +69,7 @@ export default {
             });
         },
         approve() {
-            axios.post(`${process.env.VUE_APP_API_URL}/suggestions/${this.suggestions[this.selected]._id}`, this.$refs.form.suggestion).then(() => {
+            axios.post(`${process.env.VUE_APP_API_URL}/suggestions/${this.suggestions[this.selected]._id}`, this.$refs.form.getData()).then(() => {
                 this.$emit('showSnackbar', 'Propozycja została zatwierdzona!');
                 this.selected = undefined;
                 this.refresh();

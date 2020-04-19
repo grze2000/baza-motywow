@@ -25,7 +25,11 @@
                                 Oczekujące na potwierdzenie
                             </v-list-item-content>
                             <v-list-item-action>
-                                <v-badge color="orange" :content="suggestionCount" bottom v-if="suggestionCount"></v-badge>
+                                <v-badge
+                                    bottom
+                                    color="orange"
+                                    :content="suggestionCount"
+                                    v-if="suggestionCount"></v-badge>
                             </v-list-item-action>
                         </v-list-item>
                         <v-list-item value="Motifs">
