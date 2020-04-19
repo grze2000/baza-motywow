@@ -58,10 +58,10 @@ export default {
                     this.refresh();
                     this.$emit('showSnackbar', 'Zmiany zostały zapisane!');
                 }).catch((err) => {
-                    if(err.response.status === 401) {
-                        this.$router.push('/login');
-                    } else {
+                    if(typeof err.response.data.message !== 'undefined') {
                         this.$emit('showSnackbar', err.response.data.message);
+                    } else {
+                        this.$emit('showSnackbar', err.message);
                     }
                 });
             }
