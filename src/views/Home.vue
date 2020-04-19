@@ -138,9 +138,15 @@ export default {
     created() {
         axios.get(`${process.env.VUE_APP_API_URL}/motifs`).then((response) => {
             this.motifs = response.data;
-        })
+        }).catch((err) => {
+            this.showSnackbar(err.message);
+        });
     },
     methods: {
+        showSnackbar(text) {
+            this.snackbar.message = text;
+            this.snackbar.show = true;
+        },
         submit() {
            if(this.$refs.form.submit()) {
                this.btnLoading = true;
@@ -148,16 +154,14 @@ export default {
                    this.btnLoading = false;
                    this.$refs.form.reset();
                    this.dialog = false;
-                   this.snackbar.message = 'Propozycja została zapisana i czeka na akceptację';
-                   this.snackbar.show = true;
+                   this.showSnackbar('Propozycja została zapisana i czeka na akceptację');
                }).catch((err) => {
                    this.btnLoading = false;
                    if(typeof err.response.data.message !== 'undefined') {
-                       this.snackbar.message = err.response.data.message;
+                       this.showSnackbar(err.response.data.message);
                    } else {
-                       this.snackbar.message = `Wystąpił błąd: ${err.message}`;
+                       this.showSnackbar(`Wystąpił błąd: ${err.message}`);
                    }
-                   this.snackbar.show = true;
                })
            }
         },
