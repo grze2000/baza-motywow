@@ -20,7 +20,7 @@
             <v-list shaped>
                 <v-subheader>Panel Administratora</v-subheader>
                     <v-list-item-group v-model="component">
-                        <v-list-item value="Suggestions">
+                        <v-list-item value="Suggestions" @click="hideDrawer">
                             <v-list-item-content>
                                 Oczekujące na potwierdzenie
                             </v-list-item-content>
@@ -32,10 +32,10 @@
                                     v-if="suggestionCount"></v-badge>
                             </v-list-item-action>
                         </v-list-item>
-                        <v-list-item value="Motifs">
+                        <v-list-item value="Motifs" @click="hideDrawer">
                             <v-list-item-content>Motywy</v-list-item-content>
                         </v-list-item>
-                        <v-list-item value="References">
+                        <v-list-item value="References" @click="hideDrawer">
                             <v-list-item-content>Nawiązania</v-list-item-content>
                         </v-list-item>
                     </v-list-item-group>
@@ -102,6 +102,11 @@ export default {
         },
         updateSuggestionCount(count) {
             this.suggestionCount = count;
+        },
+        hideDrawer() {
+            if(window.innerWidth < 1264) {
+                this.drawer = false;
+            }
         }
     }
 }

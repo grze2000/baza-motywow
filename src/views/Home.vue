@@ -10,7 +10,7 @@
                 <v-list shaped>
                     <v-subheader>Motywy</v-subheader>
                     <v-list-item-group v-model="selected">
-                        <v-list-item v-for="item in motifs" :key="item._id">
+                        <v-list-item v-for="item in motifs" :key="item._id" @click="hideDrawer">
                             <v-list-item-avatar>
                                 <v-img :src="item.imageURL ? item.imageURL : defaultAvatar"></v-img>
                             </v-list-item-avatar>
@@ -168,6 +168,11 @@ export default {
         closeDialog() {
             this.$refs.form.reset();
             this.dialog = false;
+        },
+        hideDrawer() {
+            if(window.innerWidth < 1264) {
+                this.drawer = false;
+            }
         }
     },
     computed: {
