@@ -1,5 +1,5 @@
 <template>
-        <v-container fluid class="fill-height grey lighten-5">
+        <v-container fluid class="fill-height grey lighten-5 background">
             <v-row align="center" justify="center">
                 <v-col cols="12" md="4">
                     <v-card class="" raised>
@@ -75,3 +75,22 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.background {
+    position: relative;
+}
+.background:before {
+    display: block;
+    content:"";
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-image: url('/img/background.jpg');
+    background-size: cover;
+    background-position: center;
+    filter: blur(3px);
+}
+</style>
