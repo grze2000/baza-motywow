@@ -17,7 +17,7 @@
             </v-btn>
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" app clipped>
-            <v-list shaped>
+            <v-list shaped class="list-scroll">
                 <v-subheader>Panel Administratora</v-subheader>
                     <v-list-item-group v-model="component">
                         <v-list-item value="Suggestions" @click="hideDrawer">

@@ -7,7 +7,7 @@
 
         <v-navigation-drawer app clipped v-model="drawer">
             <div class="d-flex flex-column fill-height">
-                <v-list shaped>
+                <v-list shaped class="list-scroll">
                     <v-subheader>Motywy</v-subheader>
                     <v-list-item-group v-model="selected">
                         <v-list-item v-for="item in motifs" :key="item._id" @click="hideDrawer">
@@ -20,7 +20,7 @@
                         </v-list-item>
                     </v-list-item-group>
                 </v-list>
-                <div class="text-center mt-auto py-3">
+                <div class="text-center mt-auto py-3 br-top">
                     <v-btn
                         depressed
                         rounded
