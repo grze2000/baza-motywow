@@ -181,16 +181,20 @@ export default {
             for (let item of this.motifs) {
                 counter += item.items.length;
             }
-            if([2, 3, 4].includes(counter % 10)) {
+            if([2, 3, 4].includes(counter % 10) && Math.floor(counter / 10) % 10 !== 1) {
                 counter = counter.toString()+' nazwiązania pogrupowane';
+            } else if(counter === 1) {
+                counter = counter.toString()+' nawiązanie pogrupowane';
             } else {
                 counter = counter.toString()+' nawiązań pogrupowanych';
             }
             return counter;
         },
         motifCount() {
-            if([2, 3, 4].includes(this.motifs.length % 10)) {
+            if([2, 3, 4].includes(this.motifs.length % 10) && Math.floor(this.motifs.length / 10) % 10 !== 1) {
                 return this.motifs.length.toString()+' motywy';
+            } else if(this.motifs.length === 1) {
+                return '1 motyw';
             } else {
                 return this.motifs.length.toString()+' motywów';
             }
