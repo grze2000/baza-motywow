@@ -25,14 +25,13 @@
                 ></v-text-field>
             </v-col>
             <v-col cols="12" md="6">
-                <v-overflow-btn
+                <v-select
                     label="Typ utworu*"
                     :items="comboboxItems"
                     v-model="suggestion.reference.type"
                     :rules="[v => !!v || 'Wybierz typ utworu']"
                     required
-                    dense
-                ></v-overflow-btn>
+                ></v-select>
             </v-col>
             <v-col cols="12" md="6">
                 <v-text-field label="Twóje imię/pseudonim" v-model="suggestion.reference.nick"></v-text-field>
