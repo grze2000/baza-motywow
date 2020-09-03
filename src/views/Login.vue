@@ -63,11 +63,11 @@ export default {
                 this.loading = true;
                 axios.post(`${process.env.VUE_APP_API_URL}/login`, this.data).then((response) => {
                     localStorage.setItem('token', response.data.token);
-                    this.loading = false;
                     this.$router.push('/admin');
                 }).catch((err) => {
                     this.snackbar.message = err.response.data.message;
                     this.snackbar.show = true;
+                }).finally(() => {
                     this.loading = false;
                 });
             }

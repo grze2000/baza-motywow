@@ -35,7 +35,7 @@
             </div>
         </v-navigation-drawer>
 
-        <v-content class="grey lighten-5 fill-height">
+        <v-main class="grey lighten-5 fill-height">
             <v-container fluid class="pa-5">
                 <v-expansion-panels accordion v-if="typeof selected !== 'undefined'">
                     <v-expansion-panel v-for="item in motifs[selected].items" :key="item._id">
@@ -88,7 +88,7 @@
                     </v-card>
                 </div>
             </v-container>
-        </v-content>
+        </v-main>
 
         <v-dialog v-model="dialog" max-width="600" persistent>
             <v-card>
@@ -151,18 +151,18 @@ export default {
            if(this.$refs.form.submit()) {
                this.btnLoading = true;
                axios.post(`${process.env.VUE_APP_API_URL}/suggestions`, this.$refs.form.getData()).then(() => {
-                   this.btnLoading = false;
                    this.$refs.form.reset();
                    this.dialog = false;
                    this.showSnackbar('Propozycja została zapisana i czeka na akceptację');
                }).catch((err) => {
-                   this.btnLoading = false;
                    if(typeof err.response.data.message !== 'undefined') {
                        this.showSnackbar(err.response.data.message);
                    } else {
                        this.showSnackbar(`Wystąpił błąd: ${err.message}`);
                    }
-               })
+               }).finally(() => {
+                    this.btnLoading = false;
+               });
            }
         },
         closeDialog() {

@@ -46,7 +46,7 @@
                     </v-list-item>
             </v-list>
         </v-navigation-drawer>
-        <v-content class="grey lighten-5 fill-height">
+        <v-main class="grey lighten-5 fill-height">
             <v-container fluid>
                 <component
                     :is="component"
@@ -55,7 +55,7 @@
                     ref="component"
                 ></component>
             </v-container>
-        </v-content>
+        </v-main>
         <v-snackbar v-model="snackbar.show">{{ snackbar.message }}</v-snackbar>
     </div>
 </template>
