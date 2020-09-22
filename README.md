@@ -1,4 +1,13 @@
-# baza-motywow
+# Baza motywów
+
+I was preparing for my high school leaving exam but I couldn't just stop coding and focus on learning of boring things. I created an application that can help you prepare for the Polish exam. It contains a list of motifs from books, movies, series and others that you can use in your essay. Everyone can suggest own motif. I used MEVN Stack. I also found interesting CSS framework for Vue (Vuetify) and I decided to try it out.
+
+![](https://grzegorzbabiarz.com/img/bazamotywow.jpg)
+
+## Built With
+
+* Vue.js
+* Vuetify
 
 ## Project setup
 ```
@@ -14,11 +23,3 @@ npm run serve
 ```
 npm run build
 ```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
