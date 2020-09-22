@@ -1,7 +1,13 @@
 {
   "name": "baza-motywow",
   "version": "0.1.0",
-  "private": true,
+  "description": "An application that can help you write an essay",
+  "author": "Grzegorz Babiarz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grze2000/baza-motywow.git"
+  },
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
