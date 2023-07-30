@@ -62,12 +62,12 @@
 
 <script>
 import axios from 'axios'
-import Suggestions from '../components/Suggestions.vue'
-import Motifs from '../components/Motifs.vue'
-import References from '../components/References.vue'
+import Suggestions from '../components/SuggestionList.vue'
+import Motifs from '../components/MotifList.vue'
+import References from '../components/ReferenceList.vue'
 
 export default {
-    name: 'Admin',
+    name: 'AdminView',
     components: {
         Suggestions,
         Motifs,

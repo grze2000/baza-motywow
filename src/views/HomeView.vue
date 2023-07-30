@@ -116,7 +116,7 @@ import SuggestionForm from '../components/SuggestionForm.vue'
 import axios from 'axios'
 
 export default {
-    name: 'Home',
+    name: 'HomeView',
     components: {
         SuggestionForm 
     },

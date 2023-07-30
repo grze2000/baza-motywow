@@ -63,7 +63,7 @@
 </template>
 <script>
 export default {
-    name: 'Form',
+    name: 'SuggestionForm',
     props: ['default'],
     data: () => ({
         suggestion: {

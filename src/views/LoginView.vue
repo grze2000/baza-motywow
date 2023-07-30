@@ -40,7 +40,7 @@
 import axios from 'axios'
 
 export default {
-    name: 'Login',
+    name: 'LoginView',
     data() {
         return {
             valid: false,
@@ -88,7 +88,7 @@ export default {
     position: absolute;
     top: 0;
     left: 0;
-    background-image: url('/img/background.jpg');
+    background-image: url('../../assets/background.jpg');
     background-size: cover;
     background-position: center;
     filter: blur(3px);
